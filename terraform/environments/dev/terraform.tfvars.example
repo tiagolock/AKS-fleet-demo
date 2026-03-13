@@ -7,9 +7,6 @@
 # client_id       = "your-client-id"
 # client_secret   = "your-client-secret"
 
-# Resource Groups Configuration
-use_single_resource_group = false
-
 # AKS Cluster 1 Configuration (e.g., East US)
 aks_cluster_1 = {
   name                = "aks-cluster-1"
@@ -31,9 +28,15 @@ fleet_name               = "fleet-manager"
 fleet_location           = "eastus"
 fleet_resource_group_name = "rg-aks-fleet"
 
+# Jump Host Configuration
+enable_jump_host         = true
+jump_host_vm_size        = "Standard_B2s"
+jump_host_username       = "azureuser"
+
 # Network Configuration
 vnet_address_space        = "10.0.0.0/16"
 aks_subnet_address_prefix = "10.0.1.0/24"
+jump_host_subnet_address_prefix = "172.16.0.0/24"
 
 # Tags
 tags = {
