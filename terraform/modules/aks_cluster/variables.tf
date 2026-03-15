@@ -23,22 +23,22 @@ variable "kubernetes_version" {
 variable "system_node_pool" {
   description = "System node pool configuration"
   type = object({
-    name           = string
-    vm_size        = string
-    node_count     = number
-    min_count      = number
-    max_count      = number
+    name       = string
+    vm_size    = string
+    node_count = number
+    min_count  = number
+    max_count  = number
   })
 }
 
 variable "user_node_pools" {
   description = "List of user node pool configurations"
   type = list(object({
-    name           = string
-    vm_size        = string
-    node_count     = number
-    min_count      = number
-    max_count      = number
+    name       = string
+    vm_size    = string
+    node_count = number
+    min_count  = number
+    max_count  = number
   }))
 }
 
@@ -74,11 +74,6 @@ variable "aad_admin_group_ids" {
 }
 
 # Network Configuration
-variable "network_plugin" {
-  description = "Network plugin (azure, kubenet)"
-  type        = string
-  default     = "azure"
-}
 
 variable "network_policy" {
   description = "Network policy (calico, azure)"
@@ -103,17 +98,4 @@ variable "rbac_enabled" {
   description = "Enable RBAC"
   type        = bool
   default     = true
-}
-
-# Azure Monitor
-variable "oms_agent" {
-  description = "Enable OMS agent for Azure Monitor"
-  type        = bool
-  default     = false
-}
-
-variable "log_analytics_workspace_id" {
-  description = "Log Analytics workspace ID"
-  type        = string
-  default     = ""
 }

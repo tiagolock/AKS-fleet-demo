@@ -27,16 +27,6 @@ output "node_resource_group" {
   value       = azurerm_kubernetes_cluster.main.node_resource_group
 }
 
-output "system_node_pool_id" {
-  description = "The system node pool resource ID"
-  value       = azurerm_kubernetes_cluster.main.default_node_pool[0].id
-}
-
-output "user_node_pool_ids" {
-  description = "List of user node pool resource IDs"
-  value       = azurerm_kubernetes_cluster_node_pool.user_pools[*].id
-}
-
 output "client_certificate" {
   description = "Client certificate used to authenticate to the cluster"
   value       = azurerm_kubernetes_cluster.main.kube_config[0].client_certificate

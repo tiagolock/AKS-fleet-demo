@@ -7,9 +7,9 @@ resource "random_id" "cluster" {
 
 # Azure AD Application for cluster (if RBAC enabled)
 resource "azuread_application" "aks_cluster" {
-  count               = var.rbac_enabled ? 1 : 0
-  display_name        = var.cluster_name
-  identifier_uris     = ["api://${var.cluster_name}"]
+  count           = var.rbac_enabled ? 1 : 0
+  display_name    = var.cluster_name
+  identifier_uris = ["api://${var.cluster_name}"]
   optional_claims {
     access_token {
       name = "groups"
@@ -19,7 +19,7 @@ resource "azuread_application" "aks_cluster" {
 
 # Service Principal for AKS cluster
 resource "azuread_service_principal" "aks_cluster" {
-  count  = var.rbac_enabled ? 1 : 0
+  count     = var.rbac_enabled ? 1 : 0
   client_id = azuread_application.aks_cluster[0].client_id
 }
 
@@ -30,15 +30,15 @@ resource "azurerm_kubernetes_cluster" "main" {
   resource_group_name = var.resource_group_name
   dns_prefix          = var.cluster_name
   kubernetes_version  = var.kubernetes_version
-  sku_tier            = "Free"  # Use Paid for production
+  sku_tier            = "Free" # Use Paid for production
 
   # Default Node Pool (System)
   default_node_pool {
-    name                = var.system_node_pool.name
-    vm_size             = var.system_node_pool.vm_size
-    node_count          = var.system_node_pool.node_count
-    type                = "VirtualMachineScaleSets"
-    zones               = ["1", "2", "3"]
+    name       = var.system_node_pool.name
+    vm_size    = var.system_node_pool.vm_size
+    node_count = var.system_node_pool.node_count
+    type       = "VirtualMachineScaleSets"
+    zones      = ["1", "2", "3"]
 
     # Network settings
     vnet_subnet_id = var.subnet_id != "" ? var.subnet_id : null
@@ -56,12 +56,12 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   # Network Configuration
   network_profile {
-    network_plugin     = var.network_plugin
-    network_policy     = var.network_policy
-    service_cidr       = var.service_cidr
-    dns_service_ip     = var.dns_service_ip
-    load_balancer_sku  = "standard"
-    outbound_type      = "loadBalancer"
+    network_plugin    = "azure"
+    network_policy    = var.network_policy
+    service_cidr      = var.service_cidr
+    dns_service_ip    = var.dns_service_ip
+    load_balancer_sku = "standard"
+    outbound_type     = "loadBalancer"
   }
 
   # RBAC Configuration
@@ -78,11 +78,6 @@ resource "azurerm_kubernetes_cluster" "main" {
     secret_rotation_enabled = false
   }
 
-  # OMS Agent (if enabled)
-  oms_agent {
-    log_analytics_workspace_id = var.oms_agent ? var.log_analytics_workspace_id : null
-  }
-
   # Maintenance Window
   maintenance_window {
     allowed {
@@ -96,15 +91,15 @@ resource "azurerm_kubernetes_cluster" "main" {
 
 # User Node Pools
 resource "azurerm_kubernetes_cluster_node_pool" "user_pools" {
-  count                = length(var.user_node_pools)
-  name                 = var.user_node_pools[count.index].name
+  count                 = length(var.user_node_pools)
+  name                  = var.user_node_pools[count.index].name
   kubernetes_cluster_id = azurerm_kubernetes_cluster.main.id
-  vm_size              = var.user_node_pools[count.index].vm_size
-  node_count           = var.user_node_pools[count.index].node_count
-  min_count            = var.user_node_pools[count.index].min_count
-  max_count            = var.user_node_pools[count.index].max_count
-  zones                = ["1", "2", "3"]
-  vnet_subnet_id       = var.subnet_id != "" ? var.subnet_id : null
+  vm_size               = var.user_node_pools[count.index].vm_size
+  node_count            = var.user_node_pools[count.index].node_count
+  min_count             = var.user_node_pools[count.index].min_count
+  max_count             = var.user_node_pools[count.index].max_count
+  zones                 = ["1", "2", "3"]
+  vnet_subnet_id        = var.subnet_id != "" ? var.subnet_id : null
 
   node_labels = {
     "nodepool" = "user"

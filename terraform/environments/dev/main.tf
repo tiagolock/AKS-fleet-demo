@@ -60,21 +60,17 @@ module "fleet_manager" {
 # ============================================
 
 # Fleet Member for Cluster 1
-resource "azurerm_fleet_cluster" "cluster_1" {
-  name           = var.aks_cluster_1.name
-  fleet_id       = module.fleet_manager.id
-  location       = var.aks_cluster_1.location
-  resource_group = data.azurerm_resource_group.rg.name
-  depends_on     = [module.aks_cluster_1]
+resource "azurerm_kubernetes_fleet_member" "cluster_1" {
+  kubernetes_cluster_id = module.aks_cluster_1.id
+  kubernetes_fleet_id   = module.fleet_manager.id
+  name                  = module.aks_cluster_1.name
 }
 
 # Fleet Member for Cluster 2
-resource "azurerm_fleet_cluster" "cluster_2" {
-  name           = var.aks_cluster_2.name
-  fleet_id       = module.fleet_manager.id
-  location       = var.aks_cluster_2.location
-  resource_group = data.azurerm_resource_group.rg.name
-  depends_on     = [module.aks_cluster_2]
+resource "azurerm_kubernetes_fleet_member" "cluster_2" {
+  kubernetes_cluster_id = module.aks_cluster_2.id
+  kubernetes_fleet_id   = module.fleet_manager.id
+  name                  = module.aks_cluster_2.name
 }
 
 # ============================================
