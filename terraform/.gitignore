@@ -1,0 +1,55 @@
+# ====================
+# Terraform
+# ====================
+
+# Local .terraform directories
+**/.terraform/*
+.terraform.lock.hcl
+
+# Terraform plan outputs
+*.tfplan
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, except for template files
+*.tfvars
+!terraform.tfvars.example
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do want to track
+!.gitignore
+!terraform.tfvars.example
+
+# Terraform registry credentials
+*.credentials
+terraform.rc
+
+# .terraform-docs.yml
+.terraform-docs.yml
+
+# ====================
+# IDE
+# ====================
+
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ====================
+# OS
+# ====================
+
+.DS_Store
+Thumbs.db
